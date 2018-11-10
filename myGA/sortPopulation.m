@@ -44,7 +44,7 @@ else % Multi-objective case : non-domination sorting
         end
     end
     elements_in_current_front=cell2mat(front_set{front_counter});
-    while(elements_in_current_front>0)
+    while(length(elements_in_current_front)>0)
         %extract the elements in the front, 'front_counter'
         elements_in_current_front=cell2mat(front_set{front_counter});
         %fprintf('Doing it for front set %d\n',front_counter);
@@ -52,8 +52,9 @@ else % Multi-objective case : non-domination sorting
         
         % for each individual in the current front
         i=1;
+        front_set{front_counter+1}={}; %this is the set for storing the individuals for the {front_counter+1}th front
         while(i<=length(elements_in_current_front))
-            front_set{front_counter+1}={}; %this is the set for storing the individuals for the {front_counter+1}th front
+            
             %fprintf('Doing it for element %d in the front %d\n',i,front_counter);
             %At this point we need to find the list of all individuals
             %which were dominated by the 'i'th individual in elements_in_current_front
@@ -78,7 +79,6 @@ else % Multi-objective case : non-domination sorting
                     %no individuals in the subsequent front would dominate q!
                     unsorted(unsorted_index,V+M+1)=front_counter+1;
                     front_set{front_counter+1}=[front_set{front_counter+1} unsorted_index];
-                    front_set{front_counter+1}
                     sorted=[sorted;unsorted(unsorted_index,:)];
                 end
             end
@@ -88,6 +88,9 @@ else % Multi-objective case : non-domination sorting
         %continue the while loop if there is element in the next front_set
         front_counter=front_counter+1;
         elements_in_current_front=cell2mat(front_set{front_counter});
+    end
+    if(length(sorted(:,1))~=length(unsorted(:,1)))
+        printf('FATAL!')
     end
 end
     
