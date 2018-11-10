@@ -1,0 +1,17 @@
+function result=findMorePowerful(element1,element2,V,M)
+%This function tells whether element2 dominates over element 1 or not
+%return a false if element 2 is dominant
+%Element 2 dominates over element1 if there is ATLEAST one objective of
+%element2 lesser than that of element1
+% Starts with the assumption that element2 is more powerful than the first
+% element. But if you encounter an objective of element2 that is greater
+% than element1, the assumption is false.
+
+result=true; 
+for i=V+1:M+V
+     if(element2(i)>=element1(i))
+         result=false;
+         break
+     end
+ end
+end

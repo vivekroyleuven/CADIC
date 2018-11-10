@@ -1,0 +1,162 @@
+function sorted=sortPopulation(unsorted,V,M)
+
+
+if M==1
+   % To be written
+   sorted=sortrows(unsorted,V+M);
+
+else % Multi-objective case : non-domination sorting
+    
+    %% Ranking
+    % To be written
+    unsorted_buf=unsorted;
+    unsorted=[unsorted zeros(length(unsorted(:,1)),1)]; % add an extra column for the rank
+    sorted=[];
+    N=zeros(length(unsorted(:,1)),1); % this is the vector where N(i) indicates the number of elements that dominate unsorted(:,:)
+    sorted=[];
+    front_counter=1; 
+    front_set{front_counter}={};
+    for i=1:length(unsorted(:,1))
+        S{i}=[];
+        for j=1:length(unsorted(:,1))
+            if(i~=j)
+                %don't compare the same element to each other as
+                %element dominates itself by definition
+                if(does1dominate2(unsorted(i,:),unsorted(j,:),V,M))
+                    %this is the case where unsorted(i,:) dominates
+                    %unsorted(j,:)
+                    S{i}=[S{i} j]; %store the index of the citizen that dominates unsorted{i,:)
+                else
+                    %need to check whether unsorted(j,:) dominates
+                    %unsorted(i,:)
+                    if(does1dominate2(unsorted(j,:),unsorted(i,:),V,M))
+                        N(i)=N(i)+1;
+                    end
+                end
+            end
+        end
+        if(N(i)==0)
+            % no individual dominates unsorted(i,:) and therefore N(i)
+            % belongs to the first rank
+            unsorted(i,V+M+1)=front_counter; %note that front counter here is 1
+            sorted=[sorted;unsorted(i,:)];
+            front_set{front_counter}=[front_set{front_counter} i];
+        end
+    end
+    elements_in_current_front=cell2mat(front_set{front_counter});
+    while(elements_in_current_front>0)
+        %extract the elements in the front, 'front_counter'
+        elements_in_current_front=cell2mat(front_set{front_counter});
+        %fprintf('Doing it for front set %d\n',front_counter);
+        %fprintf('Number of elements in front set %d is %d\n\n',front_counter,length(elements_in_current_front));
+        
+        % for each individual in the current front
+        i=1;
+        while(i<=length(elements_in_current_front))
+            front_set{front_counter+1}={}; %this is the set for storing the individuals for the {front_counter+1}th front
+            %fprintf('Doing it for element %d in the front %d\n',i,front_counter);
+            %At this point we need to find the list of all individuals
+            %which were dominated by the 'i'th individual in elements_in_current_front
+            Sp=S{elements_in_current_front(i)};
+            
+            %for each individual q in Sp (Sp is the set of individuals
+            %dominated by p where p is a member of the front 'front_counter'
+            k=1;
+            for j=1:length(Sp)
+                
+                %lets extract the index in the actual population 
+                unsorted_index=Sp(j);
+                
+                %domination count decreased by 1. This is because
+                %individuals that dominated Sp(j) have already been moved
+                %to the previous front and we are trying to find
+                %individuals of the next front.
+                N(unsorted_index)=N(unsorted_index)-1;
+                if(N(unsorted_index)==0)
+                    %fprintf('\t k==%d and putting it in %d\n',k,front_counter+1);
+                    k=k+1;
+                    %no individuals in the subsequent front would dominate q!
+                    unsorted(unsorted_index,V+M+1)=front_counter+1;
+                    front_set{front_counter+1}=[front_set{front_counter+1} unsorted_index];
+                    front_set{front_counter+1}
+                    sorted=[sorted;unsorted(unsorted_index,:)];
+                end
+            end
+            i=i+1;
+        end
+        %increment the front_counter.
+        %continue the while loop if there is element in the next front_set
+        front_counter=front_counter+1;
+        elements_in_current_front=cell2mat(front_set{front_counter});
+    end
+end
+    
+            
+            
+        
+            
+        
+    
+%                     
+%         
+%         
+%         
+%         
+%         
+%         var_length=length(unsorted(:,1));
+%         i=1;
+%         while(i<=var_length)
+%             % start with the assumption that no other element in the array
+%             % is more powerful than the initial element
+%             result=false;
+%             index=[];
+%             for j=1:length(unsorted(:,1))
+%                 if(i~=j)
+%                     if((findMorePowerful(unsorted(i,:),unsorted(j,:),V,M))) %if the first element doesn't dominate the second element
+%                         result=true; %OOPS! There is atleast one element which is more powerful than the original
+%                         break
+%                     end
+%                     if(result==false)
+%                         index=[index j];
+%                     end
+%                 end
+%             end
+%             
+%             if(length(index)>0)
+%                 unsorted(i,V+M+1)=rank;
+%                 rank
+%                 sorted=[sorted;unsorted(i,:)];   
+%                 for k=1:length(index)
+%                     unsorted(index(k),V+M+1)=rank;
+%                     sorted=[sorted;unsorted(index(k),:)];
+%                 end
+%                unsorted([i index],:)=[];
+%                var_length=length(unsorted(:,1));
+%             end
+%                  i=i+1;  
+%         end
+% 
+%            rank=rank+1;
+%     end
+%             
+%     
+
+    %% Crowding Distance
+    % To be written
+
+
+
+
+end
+    
+            
+            
+                
+            
+    
+        
+    
+    
+    
+
+
