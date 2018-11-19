@@ -159,7 +159,7 @@ end
             sorted_front(1,V+M+2)=inf; %set first and last element's CD to inf
             sorted_front(end,V+M+2)=inf;
             for k=2:anchor-1 
-                sorted_front(k,V+M+2)=sorted_front(k,V+M+2)+(sorted_front(k+1,V+M+2)-sorted_front(k-1,V+M+2))/(sorted_front(end,V+j)-sorted_front(1,V+j));
+                sorted_front(k,V+M+2)=sorted_front(k,V+M+2)+(sorted_front(k+1,V+j)-sorted_front(k-1,V+j))/(sorted_front(end,V+j)-sorted_front(1,V+j));
             end %% assigning the crowding distance doubt about what fmax and fmin are (each front or global)
         end
         %the front is done time to add it
