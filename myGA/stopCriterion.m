@@ -3,7 +3,7 @@ function flag=stopCriterion(it)
 %           0 if the GA must stop
 
     flag=1;
-    if it > 100
+    if it > 80
         flag=0;
     end
 

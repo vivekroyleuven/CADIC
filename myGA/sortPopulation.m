@@ -146,11 +146,27 @@ end
 
     %% Crowding Distance
     % To be writ
-    sorted=[sorted zeros(length(unsorted(:,1)),1)]; % add an extra column for the CD
-    for i=1:front_counter
-
+    sorted=[sorted zeros(length(unsorted(:,1)),1)]; % add an extra column for the CD an initialize it to zero
+    sorted_buf=[];
+    sorted_front=[];
+    front=[];
+    anchor=0;
+    for i=1:front_counter-1 %for every front
+        front=sorted(anchor+1:anchor+length(front_set{i}),:);
+        anchor=length(front_set{i});
+        for j=1:M %for every objective funciton   
+            sorted_front=sortrows(front,V+j); %sort based on the mth objective
+            sorted_front(1,V+M+2)=inf; %set first and last element's CD to inf
+            sorted_front(end,V+M+2)=inf;
+            for k=2:anchor-1 
+                sorted_front(k,V+M+2)=sorted_front(k,V+M+2)+(sorted_front(k+1,V+M+2)-sorted_front(k-1,V+M+2))/(sorted_front(end,V+j)-sorted_front(1,V+j));
+            end %% assigning the crowding distance doubt about what fmax and fmin are (each front or global)
+        end
+        %the front is done time to add it
+        sorted_buf=[sorted_buf;sorted_front];
+        
     end
-    
+    sorted=sorted_buf;
 
 
 

@@ -23,7 +23,7 @@ population=evaluatePopulation(population,f,V,M,lb,ub);
 
 population=sortPopulation(population,V,M);
 % clip the population to avoid passing the rank!
-population=population(:,1:V+M);
+%population=population(:,1:V+M);
 
 % Main loop
 
@@ -31,6 +31,7 @@ it=1;
 while stopCriterion(it)
 
     parents=selectionTournament(population,NP,V,M);	
+    % clip the population to avoid passing the rank!
     
     offspring=geneticOperators(parents,NC,P,V,M,f,lb,ub);
     
@@ -38,9 +39,7 @@ while stopCriterion(it)
     
     population=sortPopulation(population,V,M);
     
-    % clip the population to avoid passing the rank!
-    population=population(:,1:V+M);
-    
+ 
     population=cropPopulation(population,N);
 
     % Visualization
