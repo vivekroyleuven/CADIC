@@ -93,59 +93,10 @@ else % Multi-objective case : non-domination sorting
         printf('FATAL!')
     end
 end
-    
-            
-            
-        
-            
-        
-    
-%                     
-%         
-%         
-%         
-%         
-%         
-%         var_length=length(unsorted(:,1));
-%         i=1;
-%         while(i<=var_length)
-%             % start with the assumption that no other element in the array
-%             % is more powerful than the initial element
-%             result=false;
-%             index=[];
-%             for j=1:length(unsorted(:,1))
-%                 if(i~=j)
-%                     if((findMorePowerful(unsorted(i,:),unsorted(j,:),V,M))) %if the first element doesn't dominate the second element
-%                         result=true; %OOPS! There is atleast one element which is more powerful than the original
-%                         break
-%                     end
-%                     if(result==false)
-%                         index=[index j];
-%                     end
-%                 end
-%             end
-%             
-%             if(length(index)>0)
-%                 unsorted(i,V+M+1)=rank;
-%                 rank
-%                 sorted=[sorted;unsorted(i,:)];   
-%                 for k=1:length(index)
-%                     unsorted(index(k),V+M+1)=rank;
-%                     sorted=[sorted;unsorted(index(k),:)];
-%                 end
-%                unsorted([i index],:)=[];
-%                var_length=length(unsorted(:,1));
-%             end
-%                  i=i+1;  
-%         end
-% 
-%            rank=rank+1;
-%     end
-%             
-%     
+
 
     %% Crowding Distance
-    % To be writ
+    % To be written
     sorted=[sorted zeros(length(unsorted(:,1)),1)]; % add an extra column for the CD an initialize it to zero
     sorted_buf=[];
     sorted_front=[];
